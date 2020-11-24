@@ -1,0 +1,9 @@
+type Service {
+    uuid: String!
+    customer: Customer!
+    technician: Technician!
+    comment: String
+    state: String!
+    rate: Int!
+    link: String!
+}

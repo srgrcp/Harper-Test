@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "bea64958-960a-4583-95b7-5c58f3b76655",
+		"name": "sergio-carrillo-harper-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create Customer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation ($name: String!, $nit: String!){\n    createCustomer(name: $name, nit: $nit) {\n        nit,\n        name,\n        services{\n            uuid,\n            comment,\n            state\n        }\n    }\n}",
+						"variables": "{\n    \"name\": \"Sergio Carrillo\",\n    \"nit\": \"1143451557\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "Crea un cliente que solicitará el servicio."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Populate Technicians Table",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation{\n    populateTechnicians{\n        name,\n        nit\n    }\n}\n",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "Llena autometicamente la tabla de técnicos con datos de prueba."
+			},
+			"response": []
+		},
+		{
+			"name": "3. Create Service Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation ($customerNit: String!, $comment: String){\n    createServiceOrder(customerNit: $customerNit, comment: $comment){\n        uuid,\n        customer{\n            nit,\n            name\n        },\n        technician{\n            nit,\n            name\n        },\n        comment,\n        state,\n        rate,\n        link\n    }\n}",
+						"variables": "{\n    \"customerNit\": \"1143451557\",\n    \"comment\": \"hello, world!\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "Con el NIT del cliente solicita un servicio."
+			},
+			"response": []
+		},
+		{
+			"name": "4. Service Order Link",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/order/d395239b-a8db-4fe6-b428-0d16a9e5a854",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"order",
+						"d395239b-a8db-4fe6-b428-0d16a9e5a854"
+					]
+				},
+				"description": "Acá se prueba el link que se obtuvo en el paso 3."
+			},
+			"response": []
+		},
+		{
+			"name": "5. Finish Service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation ($uuid: String!, $technicianNit: String!){\n    finishService(uuid: $uuid, technicianNit: $technicianNit){\n        uuid,\n        customer{\n            nit,\n            name\n        },\n        technician{\n            nit,\n            name\n        },\n        comment,\n        state,\n        rate,\n        link\n    }\n}",
+						"variables": "{\n    \"uuid\": \"d395239b-a8db-4fe6-b428-0d16a9e5a854\",\n    \"technicianNit\": \"41135842\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "El técnico con su NIT actualiza el estado de un servicio a \"finalizado\"."
+			},
+			"response": []
+		},
+		{
+			"name": "6. Rate Service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation ($uuid: String!, $customerNit: String!, $rate: Int!){\n    rateService(uuid: $uuid, customerNit: $customerNit, rate: $rate){\n        uuid,\n        customer{\n            nit,\n            name\n        },\n        technician{\n            nit,\n            name\n        },\n        comment,\n        state,\n        rate,\n        link\n    }\n}",
+						"variables": "{\n    \"uuid\": \"d395239b-a8db-4fe6-b428-0d16a9e5a854\",\n    \"customerNit\": \"1143451557\",\n    \"rate\": 3\n}"
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "El cliente califica el servicio solicitado."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query ($uuid: String!){\n    getService(uuid: $uuid) {\n        uuid,\n        customer{\n            nit,\n            name\n        },\n        technician{\n            nit,\n            name\n        },\n        comment,\n        state,\n        rate,\n        link\n    }\n}",
+						"variables": "{\n    \"uuid\": \"d395239b-a8db-4fe6-b428-0d16a9e5a854\"\n}"
+					}
+				},
+				"url": {
+					"raw": "{{GraphQL-Endpoint}}",
+					"host": [
+						"{{GraphQL-Endpoint}}"
+					]
+				},
+				"description": "Obtiene cualquier servicio a partir de su UUID."
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "a9b22574-5eb3-4127-a0db-8b665d37d790",
+			"key": "GraphQL-Endpoint",
+			"value": "http://localhost:8080/graphql"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

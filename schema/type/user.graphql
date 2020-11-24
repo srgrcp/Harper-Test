@@ -1,0 +1,17 @@
+interface User {
+    nit: String!
+    name: String!
+    services: [Service]
+}
+
+type Customer implements User {
+    nit: String!
+    name: String!
+    services: [Service]
+}
+
+type Technician implements User {
+    nit: String!
+    name: String!
+    services: [Service]
+}

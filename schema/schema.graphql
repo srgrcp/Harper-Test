@@ -1,7 +1,16 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 
-type Query{
-    test: String!
+type Query {
+    getService(uuid: String!): Service!
+}
+
+type Mutation {
+    createCustomer(name: String!, nit: String!): Customer!
+    populateTechnicians(): [Technician]
+    createServiceOrder(customerNit: String!, comment: String): Service!
+    finishService(uuid: String!, technicianNit: String!): Service!
+    rateService(uuid: String!, customerNit: String!, rate: Int!): Service!
 }

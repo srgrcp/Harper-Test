@@ -7,8 +7,3 @@ type Query struct{}
 func NewRoot() *Query {
 	return &Query{}
 }
-
-// Test endpoint
-func (*Query) Test() string {
-	return "GraphQL Server is working."
-}
